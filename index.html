@@ -4,30 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypeMaster Pro - Performance Typing</title>
+    <title>TypeMaster Pro - Aprenda Digitação</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Babel Standalone para converter TSX em tempo real -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #0f172a; --surface: #1e293b; --primary: #3b82f6; --text: #f8fafc; --text-muted: #94a3b8; }
-        .theme-cyberpunk { --bg: #050505; --surface: #1a1a1a; --primary: #f0f; --text: #0ff; --text-muted: #ff00ff88; }
-        .theme-nord { --bg: #2e3440; --surface: #3b4252; --primary: #88c0d0; --text: #eceff4; --text-muted: #d8dee9; }
-        .theme-minimal { --bg: #ffffff; --surface: #f3f4f6; --primary: #111827; --text: #111827; --text-muted: #6b7280; }
+        :root { --bg: #0f172a; --surface: #1e293b; --primary: #3b82f6; --text: #f8fafc; }
+        .theme-cyberpunk { --bg: #050505; --surface: #1a1a1a; --primary: #f0f; --text: #0ff; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            overflow-x: hidden;
+            transition: background-color 0.3s ease;
+        }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); transition: all 0.3s ease; margin: 0; overflow-x: hidden; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Cursor de Digitação Animado */
+        .typing-cursor { 
+            position: relative;
+            color: var(--primary);
+            font-weight: 900;
+        }
+        .typing-cursor::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--primary);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-        .animate-shake { animation: shake 0.15s ease-in-out 0s 2; }
-        .typing-cursor { background-color: rgba(59, 130, 246, 0.2); border-bottom: 3px solid var(--primary); animation: pulse-cursor 1.5s infinite; }
-        @keyframes pulse-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 4px; }
+        .animate-shake { animation: shake 0.1s ease-in-out 0s 2; }
+
+        /* Cores dos Dedos para o Teclado */
+        .finger-mínimo { border-top: 3px solid #ef4444; }
+        .finger-anelar { border-top: 3px solid #f59e0b; }
+        .finger-médio { border-top: 3px solid #10b981; }
+        .finger-indicador { border-top: 3px solid #3b82f6; }
+        .finger-polegar { border-top: 3px solid #8b5cf6; }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
-    <!-- O Import Map permite que o navegador saiba de onde baixar as bibliotecas quando o código fizer 'import' -->
     <script type="importmap">
 {
   "imports": {
@@ -43,13 +74,7 @@
 </head>
 <body>
     <div id="root"></div>
-    <!-- 
-      IMPORTANTE: 
-      1. type="text/babel" -> Diz para o Babel processar este arquivo.
-      2. data-type="module" -> Diz para o Babel gerar um <script type="module">, 
-         permitindo que os 'import' dentro do seu index.tsx funcionem.
-      3. data-presets="react,typescript" -> Configura o suporte a TSX.
-    -->
+    <!-- O segredo está aqui: data-type="module" força o Babel a gerar um script que aceita imports -->
     <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
 </body>
 </html>
