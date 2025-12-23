@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TypeMaster Pro - Performance Typing</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Babel Standalone para converter TSX em tempo real -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +27,7 @@
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 4px; }
     </style>
+    <!-- O Import Map permite que o navegador saiba de onde baixar as bibliotecas quando o código fizer 'import' -->
     <script type="importmap">
 {
   "imports": {
@@ -41,7 +43,13 @@
 </head>
 <body>
     <div id="root"></div>
-    <!-- Unificamos tudo no index.tsx para evitar erros de importação de módulos no GitHub Pages -->
-    <script type="text/babel" data-presets="react,typescript" src="./index.tsx"></script>
+    <!-- 
+      IMPORTANTE: 
+      1. type="text/babel" -> Diz para o Babel processar este arquivo.
+      2. data-type="module" -> Diz para o Babel gerar um <script type="module">, 
+         permitindo que os 'import' dentro do seu index.tsx funcionem.
+      3. data-presets="react,typescript" -> Configura o suporte a TSX.
+    -->
+    <script type="text/babel" data-type="module" data-presets="react,typescript" src="./index.tsx"></script>
 </body>
 </html>
