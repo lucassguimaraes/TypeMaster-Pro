@@ -42,7 +42,6 @@ const TypingEngine: React.FC<TypingEngineProps> = ({ lesson, onComplete, setting
     const osc = audioCtx.current.createOscillator();
     const gain = audioCtx.current.createGain();
     
-    // Simple synth for different profiles
     const freq = isError ? 120 : (settings.soundProfile === 'clicky' ? 900 : 400);
     const duration = settings.soundProfile === 'tactile' ? 0.15 : 0.08;
 
@@ -141,7 +140,7 @@ const TypingEngine: React.FC<TypingEngineProps> = ({ lesson, onComplete, setting
   const errorChar = errorIndex !== null ? lesson.content[errorIndex] : '';
 
   return (
-    <div className={`w-full max-w-4xl flex flex-col gap-8 transition-all duration-500`}>
+    <div className={`w-full max-w-4xl flex flex-col gap-6 transition-all duration-500`}>
       <div className={`grid grid-cols-4 gap-4 transition-all ${settings.focusMode && userInput.length > 0 ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
         {[
           { label: 'WPM', value: stats.wpm, color: 'text-blue-400' },
@@ -149,29 +148,28 @@ const TypingEngine: React.FC<TypingEngineProps> = ({ lesson, onComplete, setting
           { label: 'Erros', value: stats.errors, color: 'text-red-400' },
           { label: 'Tempo', value: `${stats.timeElapsed.toFixed(1)}s`, color: 'text-yellow-400' }
         ].map((stat, i) => (
-          <div key={i} className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 backdrop-blur-sm shadow-inner">
+          <div key={i} className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 backdrop-blur-sm shadow-inner text-center">
             <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">{stat.label}</p>
-            <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
+            <p className={`text-xl font-black ${stat.color}`}>{stat.value}</p>
           </div>
         ))}
       </div>
 
-      <div className={`relative p-12 bg-slate-900 rounded-3xl border-2 border-slate-700 shadow-2xl overflow-hidden min-h-[240px] flex items-center justify-center transition-all ${isShaking ? 'animate-shake border-red-500/50' : ''}`}>
-        <div className="font-mono text-4xl leading-relaxed tracking-widest select-none max-w-full break-words text-center">
+      <div className={`relative p-8 md:p-12 bg-slate-900 rounded-3xl border-2 border-slate-700 shadow-2xl overflow-hidden min-h-[220px] flex items-center justify-center transition-all ${isShaking ? 'animate-shake border-red-500/50' : ''}`}>
+        <div className="font-mono text-2xl md:text-3xl leading-loose tracking-[0.15em] select-none flex flex-wrap justify-center gap-y-2 max-w-full text-center">
           {lesson.content.split('').map((char, i) => {
-            let color = 'text-slate-600'; // Letras futuras (apagadas)
+            let color = 'text-slate-600'; 
             let cursorClass = '';
             
             if (i < userInput.length) {
-              color = 'text-slate-100'; // Letras já digitadas (brancas)
+              color = 'text-slate-100'; 
             } else if (i === userInput.length) {
-              // LETRA ATUAL: Destaque máximo em azul brilhante
-              color = errorIndex === i ? 'text-red-500' : 'text-blue-400 font-bold';
+              color = errorIndex === i ? 'text-red-500' : 'text-blue-400 font-black';
               cursorClass = 'typing-cursor';
             }
 
             return (
-              <span key={i} className={`${color} ${cursorClass} transition-all duration-75 relative px-[1px]`}>
+              <span key={i} className={`${color} ${cursorClass} transition-all duration-75 relative px-[2px]`}>
                 {char === ' ' ? '\u00A0' : char}
               </span>
             );
@@ -189,11 +187,13 @@ const TypingEngine: React.FC<TypingEngineProps> = ({ lesson, onComplete, setting
       </div>
 
       {!settings.focusMode && (
-        <VirtualKeyboard activeKey={nextChar} errorKey={errorChar} heatmap={stats.keyMap} layout={settings.layout} />
+        <div className="w-full flex justify-center">
+          <VirtualKeyboard activeKey={nextChar === ' ' ? 'Space' : nextChar} errorKey={errorChar === ' ' ? 'Space' : errorChar} heatmap={stats.keyMap} layout={settings.layout} />
+        </div>
       )}
 
       <div className={`text-center text-slate-500 text-xs transition-opacity ${settings.focusMode ? 'opacity-0' : 'opacity-100'}`}>
-        Pressione <kbd className="px-2 py-0.5 bg-slate-800 rounded border border-slate-700">Esc</kbd> para resetar a lição.
+        Dica: O <span className="text-blue-400 font-bold">ponto (.)</span> fica ao lado do M e da vírgula.
       </div>
     </div>
   );
