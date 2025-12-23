@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TypeMaster Pro - Performance Typing</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Babel para converter TSX em JS no navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -96,6 +98,10 @@
 </head>
 <body>
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
+    <!-- 
+      Abaixo, informamos ao Babel para processar o index.tsx. 
+      O data-type="module" permite que o Babel lide com os 'import' dentro do arquivo.
+    -->
+    <script type="text/babel" data-presets="react,typescript" data-type="module" src="./index.tsx"></script>
 </body>
 </html>
